@@ -13,4 +13,5 @@ The TextSummarization.py file reads the news article and provides the appropriat
 
 <p>2Abstractive Summarization:</p> Abstractive methods select words based on semantic understanding, even those words did not appear in the source documents. It aims at producing important material in a new way. They interpret and examine the text using advanced natural language techniques in order to generate a new shorter text that conveys the most critical information from the original text.
 <p>Input document → understand context → semantics → create own summary.</p>
+To build our model we will use a two-layered bidirectional RNN with LSTMs on the input data and two layers, each with an LSTM using bahdanau attention on the target data. I have added the document on this. Implemetation is not done yet
 
