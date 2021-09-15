@@ -3,6 +3,7 @@ from nltk.cluster.util import cosine_distance
 import numpy as np
 import networkx as nx
 from nltk.tokenize import sent_tokenize
+import os
 import scipy as sp
 
 
@@ -14,7 +15,7 @@ def read_article(file_name):
     article = sent_tokenize(filedata)
     sentences = []
     for sentence in article:
-        print(sentence)
+        # print(sentence)
         sentences.append(sentence.replace("[^a-zA-Z]", " ").split(" "))
     # sentences.pop()
 
@@ -67,10 +68,10 @@ def generate_summary(file_name, top_n=5):
     # Step 1 - Read text and tokenize
     sentences = read_article(file_name)
     # print("Sentences : ",sentences)
-    # Step 2 - Generate Similary Martix across sentences
+    # Step 2 - Generate Similarly Matrix across sentences
     sentence_similarity_martix = build_similarity_matrix(sentences, stop_words)
 
-    # Step 3 - Rank sentences in similarity martix
+    # Step 3 - Rank sentences in similarity matrix
     sentence_similarity_graph = nx.from_numpy_array(sentence_similarity_martix)
     scores = nx.pagerank(sentence_similarity_graph)
 
@@ -80,10 +81,19 @@ def generate_summary(file_name, top_n=5):
 
     for i in range(top_n):
         summarize_text.append(" ".join(ranked_sentence[i][1]))
-    # Step 5 - Offcourse, output the summarize texr
+    # Step 5 - output the summarize text
     print("Summarize Text: \n", ". ".join(summarize_text))
 
 
-
 if __name__ == '__main__':
-    generate_summary("cnn.txt", 2)
+    dirpath = "./dataset/stories_text_summarization_dataset_train"
+    counter = 1
+    # iterate through all file
+    for file in os.listdir(dirpath):
+        # Check whether file is in text format or not
+        if file.endswith(".story"):
+            file_path = f"{dirpath}\{file}"
+            # let's begin
+            print(str(counter) + " File, " + file)
+            generate_summary(file_path, 1)
+            counter += 1
